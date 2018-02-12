@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://java.sun.com/xml/ns/j2ee"
+        xmlns:web="http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
+        xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd "
+        version="2.4">
+
+	<display-name>SpringMVCTest</display-name>
+	
+	<!-- Spring应用上下文 理解层次化得applicationcontext -->
+	<!-- 解决在Tomcat启动时 找不到配置文件mvc-dispatcher-servlet.xml问题 -->
+	<context-param>  
+        <param-name>contextConfigLocation</param-name>  
+<!--         <param-value>classpath:applicationContext*.xml</param-value>   -->
+        <param-value>classpath:mvc-dispatcher-servlet.xml</param-value>  
+    </context-param> 
+    
+    <listener>
+    	<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+    
+    <!-- dispatcherServlet Spring MVC的核心 -->
+	<servlet>
+		<servlet-name>mvc-dispatcher</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<!-- DispatcherServlet对应的上下文配置 默认为/WEB_INF/$servlet-name$-servlet.xml -->
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>classpath:mvc-dispatcher-servlet.xml</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>mvc-dispatcher</servlet-name>
+		<!-- 拦截所有请求 -->
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>
+</web-app>
